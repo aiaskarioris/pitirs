@@ -2,6 +2,8 @@ import os
 import time
 from enum import Enum
 
+from gamestate import GameState
+
 class MainStateEnum(Enum):
 	wait_to_start = 0
 	playing = 1
@@ -51,21 +53,24 @@ class MainState():
 		self.frame += 1
 		time.sleep(self.refresh_time_ms / 1000)
 
+	### State Functions ###########################################################################
+
 	# Sub-Loops; Each loop can freely display things on screen and change the program's states
 	def wait_to_start_loop(self):
 		# Wait for input
-		if ... :
+		if False:
 			# Still waiting...
 			# Do an animation based on `self.frame` value
+			0
 		else:
 			# A new game is starting
 			self.game = GameState()
-			self.state = MainState.playing
+			self.state = MainStateEnum.playing
 		return
 
 	def playing_loop(self):
 		# Generate a random block if we don't have one (just started playing or prev. one was piled)
-		if self.game.block_obj == None:
+		if self.game.blockObj == None:
 			self.game.generate_block()
 		# Check input and apply effect to block
 
@@ -75,16 +80,29 @@ class MainState():
 		# Check if the pile has any full lines and drop remaining lines; score may be updated
 		self.game.check_pile()
 
+		# Render current state
+		self.draw_block()
+		self.draw_pile()
+
 		# `check_pile` may generate a game-over; Check if this is the case
-		if self.game_over == True:
-			self.state = MainState.game_over
+		if self.game.gameOver == True:
+			self.state = MainStateEnum.game_over
 
 		return
 
 	def game_over_loop(self):
-
+		# TODO
 		return
 
 	def exception_loop(self):
+		# TODO
+		return
 
+	### Drawing Functions #########################################################################
+	def draw_block(self):
+		# TODO
+		return
+
+	def draw_pile(self):
+		# TODO
 		return
