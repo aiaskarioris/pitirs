@@ -1,0 +1,331 @@
+\documentclass[11pt,titlepage,openright]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[british]{babel}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[sb]{libertine}
+\usepackage[scale=0.9]{inconsolata}
+
+\usepackage[sf]{titlesec}
+\usepackage[square,sort,colon,authoryear]{natbib}
+%\usepackage[export]{adjustbox}
+
+\usepackage{
+  marginnote, % Improved margin notes
+  environ,
+  ragged2e,   % Justified text in the margin notes
+  url,        % For typesetting URLs
+  listings,   % Code formatting
+  hyperref,   % Links in PDF from TOC, refs, etc.
+  lipsum,
+  booktabs,
+  changepage,
+  float,
+  dingbat
+}
+\renewcommand{\bfdefault}{bx}
+\DeclareTextFontCommand\textsb{\libertineSB}
+
+\usepackage[capitalise]{cleveref}
+\Crefname{section}{\S}{\S\S}
+
+\usepackage{enumitem}   % Improved lists 
+% \setlist{noitemsep} % To make all lists compact
+\setlist[itemize]{itemsep=0pt}
+\setlist[itemize,1]{label=--}
+\setlist[itemize,2]{label=\ensuremath{\triangleright}}
+\setlist[itemize,3]{label=\RED{AVOID}}
+% Description lists to use semibold labels
+\setlist[description]{font=\libertineSB}
+
+\usepackage[twoside,labelfont=sf]{caption}
+
+\captionsetup{justification=raggedright,singlelinecheck=false}
+
+\newcommand\myhrulefill[1]{\leavevmode\leaders\hrule height#1\hfill\kern0pt}
+\DeclareCaptionFormat{FigFormat}{{\color{black}\myhrulefill{0.5pt}}\\#1#2#3}
+\captionsetup[figure]{format=FigFormat}
+\captionsetup[table]{format=FigFormat}
+
+\DeclareCaptionFormat{LstFormat}{\textsf{Listing}~\arabic{chapter}.\arabic{listing}:#2#3}
+\floatstyle{ruled}
+\newfloat{listing}{thp}{lol}[chapter]
+\floatname{listing}{Listing}
+\captionsetup[listing]{format=LstFormat}
+
+\NewEnviron{MarginNote}[1][0mm]{\marginnote{\footnotesize\justifying\BODY}[#1]}
+\newcommand{\Footnote}[2][0mm]{\footnotemark\marginnote{\footnotesize$^{\arabic{footnote})}$~#2}[#1]}
+
+\renewenvironment{figure*}[1][]{%
+  \begin{figure}[#1]%
+    % This feature is deprecated for now
+    % \checkoddpage%
+    % \ifoddpage%
+    %   \begin{adjustwidth}{0cm}{-45mm}%%
+    % \else%
+    %   \begin{adjustwidth}{-45mm}{0cm}%%
+    % \fi%
+    }{%
+    % \end{adjustwidth}%
+  \end{figure}}
+
+\renewenvironment{table*}[1][]{%
+  \begin{table}[#1]%
+    % This feature is deprecated for now
+    % \checkoddpage%
+    % \ifoddpage%
+    %   \begin{adjustwidth}{0cm}{-45mm}%%
+    % \else%
+    %   \begin{adjustwidth}{-45mm}{0cm}%%
+    % \fi%
+    }{%
+    % \end{adjustwidth}%
+  \end{table}}
+
+\renewenvironment{listing*}[1][]{%
+  \begin{listing}[#1]%
+    % This feature is deprecated for now
+    % \checkoddpage%
+    % \ifoddpage%
+    %   \begin{adjustwidth}{0cm}{-45mm}%%
+    % \else%
+    %   \begin{adjustwidth}{-45mm}{0cm}%%
+    % \fi%
+    }{%
+    % \end{adjustwidth}%
+  \end{listing}}
+
+%% == Code =======================================================
+\lstnewenvironment{Code}[1][style=std]{\lstset{#1}}{}
+\lstnewenvironment{Code_Numbered}[1][style=std,numbers=left]{\lstset{#1}}{}
+
+\renewcommand{\c}[1]{\lstinline[style=std]@#1@}
+
+\lstdefinestyle{std}{
+  language=java,
+  basicstyle=\small\tt\color{black},
+  keywordstyle=\small\tt\bfseries,
+  numberstyle=\footnotesize\sf\color{black},
+  commentstyle=\small\color{black}\it,
+  aboveskip=1ex,
+  belowskip=1ex,
+  tabsize=2,
+  columns=fullflexible,
+  xleftmargin=1ex,
+  resetmargins=true,
+  showstringspaces=false,
+  morecomment=[l]{//},
+  morecomment=[l]{--},
+  morecomment=[s]{/*}{*/},
+  escapeinside=@@,
+  morekeywords={Frobies},
+  moredelim=[is][\textit]{___}{___},
+  moredelim=[is][\textbf]{__*}{*__},
+  numberbychapter=true
+}
+
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage[paper=a4paper,text={13cm,24cm},marginparsep=5mm,marginparwidth=45mm,inner=20mm,twoside]{geometry}
+
+\newcommand{\RED}[1]{\textcolor{red}{#1}}
+\newcommand{\ie}{\emph{i.e.,}}
+\newcommand{\eg}{\emph{e.g.,}}
+\newcommand{\etal}{\emph{et~al.}}
+
+\usepackage{pifont}
+\newcommand{\Yes}{\ding{51}}
+\newcommand{\No}{\ding{55}}
+
+\renewcommand{\bfdefault}{b}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%% You can remove this line if you compile with --synctex=1 (see Makefile)
+\synctex=1
+\pagestyle{plain}
+
+\begin{document}
+\frontmatter
+\title{Group Project Report}
+\author{Arnab Kumar Ghosh \\ 
+        Biruk Aklilu \\ 
+        Julios Fotiou \\ 
+        Sotirios Aias Karioris}
+\date{\today}
+
+\maketitle
+
+\vspace*{3cm}
+\section*{Abstract}
+This report presents the project \textit{PiTris}, a simplified Tetris game built on the Raspberry Pi with the Sense HAT. The aim is to combine hardware components such as the accelerometer and the LED matrix to create an interactive game. The players move falling blocks by tilting the Raspberry Pi, while the LED grid shows the game.
+
+At this stage, a prototype has been implemented that connects the accelerometer input to block movement on the LED grid. This confirms the feasibility of tilt-based control, but also shows challenges with calibration and the low resolution of the 8×8 display. The report outlines project goals, progress, lessons learned, and future steps.
+
+
+\tableofcontents
+%\listoffigures
+% \listoftables
+
+\mainmatter
+
+\chapter{Introduction}
+The project \textit{PiTris} is our attempt to recreate the classic Tetris game on the Raspberry Pi. The players control the falling blocks by tilting the device, using the on board accelerometer as input. The Sense HAT’s 8×8 LED matrix provides visual output, showing the blocks as they fall from the top of the screen. The players aim to align the blocks to form complete rows, which then disappear as in the original game.  
+
+This project is interesting because it combines software development with hardware interaction. We work on game logic, timing, and scoring while also interpreting sensor data, handling calibration, and managing the limited resolution of the LED display. So far, the group has built a working prototype that translates the accelerometer input into movement on the LED grid.
+
+\section{Purpose and Goals}
+\label{sec:purpose-goals}
+The main purpose of this project is to gain practical experience in designing and building an interactive system that connects hardware with software. We aim to create a game that is fun and engaging while learning the challenges of working with real hardware. This project also helps us understand how users interact with devices and how input affects game performance. In addition, it gives us experience in planning, testing, and improving a system from concept to working prototype. 
+
+Our specific goals include the following.
+
+\begin{itemize}
+\item Develop a version of Tetris that works on the Sense HAT’s LED display, keeping in mind its small size and unique visual limits.
+\item Learn how to read accelerometer data and turn them into smooth and reliable player controls.
+\item Understand the challenges of hardware, including calibration, responsiveness, and software integration.
+\item Consider the wider aspects of the project, such as making it accessible to many users, promoting inclusivity, and thinking about ethical and environmental impacts.
+\item Explore ways to improve the user experience by testing different control schemes and game speeds.
+\item Document the development process thoroughly to help others learn from our approach and solutions.
+\end{itemize}
+
+
+
+\section{Project Outline}
+\label{sec:thesis-outline}
+
+This report is structured as follows.
+
+\begin{itemize}
+    \item \textbf{Chapter 2} reviews background material and related projects using the Raspberry Pi and Sense HAT.
+    \item \textbf{Chapter 3} explains the methods used for development, testing, and prototype design.
+    \item \textbf{Chapter 4} discusses ethical considerations, including accessibility, equity, and responsible use of hardware.
+    \item \textbf{Chapter 5} presents the implementation so far, focusing on the accelerometer prototype and integration challenges.
+    \item \textbf{Chapter 6} details the contributions of each member of the group.
+    \item \textbf{Chapter 7} concludes with reflections on progress and describes future steps to complete the project.
+\end{itemize}
+
+\chapter{Background}
+\label{cha:background}
+
+The Raspberry Pi is a small, affordable computer widely used for learning programming, electronics, and hardware projects. Its versatility allows developers to combine software with various sensors and input devices. One such accessory is the Sense HAT, which features an 8$\times$8 LED matrix, a joystick, and multiple sensors, including an accelerometer, gyroscope, and temperature sensor.
+
+The accelerometer can detect tilt and orientation, making it suitable for interactive applications such as games. The LED matrix provides a simple visual display, suitable for showing patterns or moving objects.
+
+Tetris is a classic puzzle game where players align falling blocks to form complete rows, which then disappear. Combining the Raspberry Pi, Sense HAT, and Tetris game logic provides a hands-on opportunity to explore software-hardware interaction, real-time input handling, and display limitations in a small-scale system.
+
+Previous projects have explored using the Sense HAT for games, educational tools, and interactive displays, demonstrating the potential for creative applications. \textit{PiTris} builds on these ideas by creating a fully interactive, tilt-controlled game that challenges both programming and hardware integration skills.
+
+This background shows how the Raspberry Pi and Sense HAT can be used to create interactive games. It also highlights the challenges of using real hardware, such as reading sensor data and working with a small LED display. Building on this foundation, our project \textit{PiTris} aims to develop a functional game while exploring these challenges. The next sections describe the purpose, goals, and implementation of the project, showing what we want to achieve and how we plan to do it.
+
+\chapter{Methodology}
+Before explaining the details of \textit{PiTris}, it is important to understand how the project builds on the concepts discussed in the background. This chapter describes the system architecture, game logic, graphics handling, and development tools used in the project. It also highlights the challenges faced and the risks considered during development. By following this methodology, the design and implementation of the game can be clearly understood and reproduced.
+
+\section{System Architecture}
+The \textit{PiTris} game operates using a main while-loop that runs after a short initialization process. The behavior of the system is controlled by a global state, which determines what the game should do at any given moment. There are three main states:
+
+\begin{itemize}
+    \item \textbf{wait\_to\_start:} The game is idle, waiting for user interaction. Once the player interacts, the game starts.
+    \item \textbf{playing:} A game is in progress. This state ends when the player loses.
+    \item \textbf{game\_over:} Entered after the player loses. The final score is displayed, then the game returns to \texttt{wait\_to\_start}.
+\end{itemize}
+
+The global state also stores the current score of the game. In \texttt{wait\_to\_start}, the score is set to 0. During \texttt{playing}, the score increases as the player progresses.
+
+\section{Game Loop and Logic}
+The game loop runs only in the \texttt{playing} state. Several functions are executed in each loop cycle:
+
+\subsection{Game State}
+The \textit{game state} stores information about the current block, wait interval, and the pile. The pile is represented as an 8$\times$8 array of 0s and 1s.  
+
+\subsection{Loop Functions}
+\begin{itemize}
+    \item \textbf{generate\_block():} Generates a new random block at a random location. This occurs when the previous block is cleared.
+    \item \textbf{poll\_input():} Reads the accelerometer input and updates the current falling block accordingly.
+    \item \textbf{drop\_block():} Moves the current block down by one unit. This function also handles merging the block with the pile and may clear the block if it has landed.
+    \item \textbf{check\_pile():} Checks the pile for completed lines and removes them, updating the score.
+    \item \textbf{wait():} Introduces a short delay to allow the player to process events. The delay decreases slightly as the score increases, making the game harder.
+\end{itemize}
+
+\section{Graphics Engine}
+The system uses the Sense HAT’s 8$\times$8 LED grid to display game elements. Different draw functions are executed depending on the global state:
+
+\begin{itemize}
+    \item \textbf{wait\_to\_start:} Shows a simple animation while idle.
+    \item \textbf{playing:} Split into \texttt{draw\_block()} and \texttt{draw\_pile()}. \texttt{draw\_block()} displays the current block with color. \texttt{draw\_pile()} shows the accumulated blocks in the pile.
+    \item \textbf{game\_over:} Displays the player’s score, scrolling across the screen.
+\end{itemize}
+
+The \texttt{frame} variable is used to control animations and increases by one in each main loop iteration.
+
+\section{Tools and Development Environment}
+\begin{itemize}
+    \item \textbf{Programming Language:} Python
+    \item \textbf{Libraries and APIs:} Sense HAT API
+    \item \textbf{Hardware and OS:} Raspberry Pi with Raspberry Pi OS (64-bit)
+    \item \textbf{Development Environment:} SSH connection to the Raspberry Pi for coding and testing
+\end{itemize}
+
+\section{Challenges and Risks}
+Some challenges encountered during development include:
+
+\begin{itemize}
+    \item Limited resolution of the 8$\times$8 LED display
+    \item Transforming accelerometer readings into meaningful game input
+    \item Accelerometer calibration issues
+    \item Possible hardware malfunctions
+    \item Integration challenges between initialization, control logic, and game logic
+    \item Time constraints for testing on actual hardware
+\end{itemize}
+
+\chapter{Ethical considerations}
+Although \textit{PiTris} is primarily a technical and recreational project, it is important to consider the ethical implications of its design and use. Even small educational games can raise questions about accessibility, fairness, environmental impact, intellectual property, and user health. Addressing these issues ensures that the project is responsible, inclusive, and sustainable. The following points explain the main ethical considerations relevant to \textit{PiTris} and how they can be addressed.
+
+\section{Accessibility and Inclusion}
+The game requires players to tilt the Raspberry Pi, which excludes people with limited mobility or motor impairments. To address this, future versions could include alternative input methods, such as buttons or voice commands, making the game accessible to more users \cite{Seale2014}. Ensuring accessibility is important because everyone should have the opportunity to participate in learning and recreational activities. Testing the game with different users can help identify accessibility issues and improve the design.
+
+\section{Equity in Learning and Participation}
+The project uses specialized hardware, such as the Raspberry Pi and the Sense HAT, which may not be available to everyone due to cost. This creates equity concerns, especially in educational settings. To address this, a software-only version of the game could allow users without the hardware to participate, promoting fair access \cite{Binns2018}. Providing clear instructions and free resources online can also help bridge the gap for students or hobbyists who cannot afford the devices.
+
+\section{Environmental Issues}
+Using physical devices has an environmental impact. Frequent replacements can create electronic waste. To reduce this, devices should be handled carefully, reused when possible, and disposed of responsibly. Additionally, planning the project to use minimal hardware and sharing components among multiple users can further reduce waste. Encouraging awareness about sustainability is also part of responsible project design.
+
+\section{Copyright and Intellectual Property}
+Tetris is a copyrighted and trademarked game. Using original graphics, sounds, or branding without permission would be unethical. This project avoids directly copying copyrighted material and uses only original or educational content, respecting creators’ rights. Future releases should continue to create unique visual and audio elements. Teaching users about intellectual property can also promote ethical behavior in software development.
+
+\section{Screen Time and Health}
+Even with the small 8×8 LED grid, long play sessions could cause eye strain, fatigue, or discomfort. Games that encourage repeated attempts for higher scores can also be addictive. To address this, users should be encouraged to take regular breaks, and future versions could include reminders to limit extended play \cite{Ferguson2017}. Monitoring playtime and providing tips for safe usage can help reduce negative health effects. Encouraging balance between gaming and other activities also promotes well-being.
+
+\chapter{Implementation}
+
+
+\chapter{Contributions}
+So far, the project has progressed through close collaboration among all team members. While specific roles were assigned, most tasks were carried out together, with everyone contributing ideas, supporting development, and participating in testing and planning. The following sections outline the contributions of each member up to this point.
+\section{Sotirios Aias Karioris}
+As team lead, Aias coordinated meetings, monitored deadlines, and supported technical tasks such as boot configuration and architecture design with Julios. He also worked with Biruk and Arnab on parts of the report. In addition, he provided the initial structure and skeleton of the program, giving the team a clear vision of how the game should be built.
+
+\section{Julios Fotiou}
+Julios has led the development side, working closely with Aias on the technical setup. He built the accelerometer prototype that maps tilts to block movements on the LED grid, an important step for the group. The prototype was developed with input and feedback from the whole team and now serves as a foundation for further game development.
+
+\section{Arnab Kumar Ghosh}
+Arnab has helped keep track of the team’s progress, documenting design decisions and testing outcomes. He also collaborated with Biruk and Aias on sections of the project report, contributing to writing, reviewing, and maintaining consistency. His efforts have helped the group stay aligned and organized.
+
+
+\section{Biruk Aklilu}
+Biruk contributed to the overall project by helping plan and organize tasks, taking part in team discussions, and giving ideas on development. He worked with Arnab and Aias on drafting and structuring the report, particularly the introduction and purpose sections, making sure the documentation was clear and easy to follow. He also contributed ideas on how the project could be presented.
+
+ \vspace{3ex}The team divided roles to work efficiently and make the best use of each member’s strengths. In this project, all members actively participated in every stage of the project, sharing ideas, reviewing each other’s work, and supporting one another to ensure the project progressed smoothly. This collaborative approach allowed the team to learn from each other and contribute effectively to all aspects of the project.
+
+
+\chapter{Conclusions}
+
+
+\bibliographystyle{plainnat}
+\bibliography{main}
+
+\end{document}
+
+%%% Local Variables: ***
+%%% mode: latex ***
+%%% TeX-master: "main.tex"  ***
+%%% ispell-local-dictionary: "british"  ***
+%%% End: ***
