@@ -171,7 +171,7 @@ At this stage, a prototype has been implemented that connects the accelerometer 
 \chapter{Introduction}
 The project \textit{PiTris} is our attempt to recreate the classic Tetris game on the Raspberry Pi. The players control the falling blocks by tilting the device, using the on board accelerometer as input. The Sense HAT’s 8×8 LED matrix provides visual output, showing the blocks as they fall from the top of the screen. The players aim to align the blocks to form complete rows, which then disappear as in the original game.  
 
-This project is interesting because it combines software development with hardware interaction. We work on game logic, timing, and scoring while also interpreting sensor data, handling calibration, and managing the limited resolution of the LED display. So far, the group has built a working prototype that translates the accelerometer input into movement on the LED grid.
+This project is interesting because it combines software development with hardware interaction. We work on game logic, timing, and scoring while also interpreting sensor data, handling calibration, and managing the limited resolution of the LED display. In its current state the project's codebase consists of a prototype program for the validation of accelerometer controls as well as the architectural basis of the full application.
 
 \section{Purpose and Goals}
 \label{sec:purpose-goals}
@@ -218,7 +218,51 @@ Previous projects have explored using the Sense HAT for games, educational tools
 This background shows how the Raspberry Pi and Sense HAT can be used to create interactive games. It also highlights the challenges of using real hardware, such as reading sensor data and working with a small LED display. Building on this foundation, our project \textit{PiTris} aims to develop a functional game while exploring these challenges. The next sections describe the purpose, goals, and implementation of the project, showing what we want to achieve and how we plan to do it.
 
 \chapter{Methodology}
-Before explaining the details of \textit{PiTris}, it is important to understand how the project builds on the concepts discussed in the background. This chapter describes the system architecture, game logic, graphics handling, and development tools used in the project. It also highlights the challenges faced and the risks considered during development. By following this methodology, the design and implementation of the game can be clearly understood and reproduced.
+Before explaining the details of \textit{PiTris}, it is important to understand how the project builds on the concepts discussed in the background. The tools, programs and programming language used in the project are listed in this chapter. Additionally, the way the source code constituting the program is described, thus showcasing how the general problem can be broken down into manageable tasks suitable for a team. Finally, the challenges anticipated before development as well as the actual problems that were faced during development are listed and discussed.
+
+\section{Programming Language and Tools Used}
+The source code for \textit{PiTris} is exclusively written in Python, a language known for its flexibility and ease of use for rapid application development. For the utilization of the peripherals found in Sense HAT the appropriate API has been employed. Version control is provided by \textit{git} while for the software's distribution and synchronization between the members \textit{GitHub} has been chosen.
+
+\section{Division of Workload}
+Even though the target goal of this project is relatively straightforward, the work itself resembles typical game development since the game at hand can be essentially split logically into two parts: the \textit{game logic} and the \textit{control logic}. The \textit{game logic} is the field of the source code that implements the actual game, such as its rules and its graphics. The \textit{control logic} in this case revolves around the use of the input sensors of the hardware for their implementation into the final game. These two facets of the program can be independently developed and then integrated later on.
+
+The game logic side is more layered and complex compared to the control logic. Game logic encapsulates the software routines responsible for drawing to the LED grid, the control of the logical state the program is in at any given moment, and the processing of user input for the generation of actions within the game. Splitting all of these parts of the game logic into smaller parts, it is possible for different members to work simultaneously.
+
+
+
+\section{Challenges and Risks}
+Some challenges encountered during development include:
+
+\begin{itemize}
+    \item Limited resolution of the 8$\times$8 LED display
+    \item Transforming accelerometer readings into meaningful game input
+    \item Accelerometer calibration issues
+    \item Possible hardware malfunctions
+    \item Integration challenges between initialization, control logic, and game logic
+    \item Time constraints for testing on actual hardware
+\end{itemize}
+
+
+\chapter{Ethical considerations}
+Although \textit{PiTris} is primarily a technical and recreational project, it is important to consider the ethical implications of its design and use. Even small educational games can raise questions about accessibility, fairness, environmental impact, intellectual property, and user health. Addressing these issues ensures that the project is responsible, inclusive, and sustainable. The following points explain the main ethical considerations relevant to \textit{PiTris} and how they can be addressed.
+
+\section{Accessibility and Inclusion}
+The game requires players to tilt the Raspberry Pi, which excludes people with limited mobility or motor impairments. To address this, future versions could include alternative input methods, such as buttons or voice commands, making the game accessible to more users \cite{Seale2014}. Ensuring accessibility is important because everyone should have the opportunity to participate in learning and recreational activities. Testing the game with different users can help identify accessibility issues and improve the design.
+
+\section{Equity in Learning and Participation}
+The project uses specialized hardware, such as the Raspberry Pi and the Sense HAT, which may not be available to everyone due to cost. This creates equity concerns, especially in educational settings. To address this, a software-only version of the game could allow users without the hardware to participate, promoting fair access \cite{Binns2018}. Providing clear instructions and free resources online can also help bridge the gap for students or hobbyists who cannot afford the devices.
+
+\section{Environmental Issues}
+Using physical devices has an environmental impact. Frequent replacements can create electronic waste. To reduce this, devices should be handled carefully, reused when possible, and disposed of responsibly. Additionally, planning the project to use minimal hardware and sharing components among multiple users can further reduce waste. Encouraging awareness about sustainability is also part of responsible project design.
+
+\section{Copyright and Intellectual Property}
+Tetris is a copyrighted and trademarked game. Using original graphics, sounds, or branding without permission would be unethical. This project avoids directly copying copyrighted material and uses only original or educational content, respecting creators’ rights. Future releases should continue to create unique visual and audio elements. Teaching users about intellectual property can also promote ethical behavior in software development.
+
+\section{Screen Time and Health}
+Even with the small 8×8 LED grid, long play sessions could cause eye strain, fatigue, or discomfort. Games that encourage repeated attempts for higher scores can also be addictive. To address this, users should be encouraged to take regular breaks, and future versions could include reminders to limit extended play \cite{Ferguson2017}. Monitoring playtime and providing tips for safe usage can help reduce negative health effects. Encouraging balance between gaming and other activities also promotes well-being.
+
+\chapter{Implementation}
+This chapter describes the system architecture, game logic, graphics handling, and development tools used in the project. It also highlights the challenges faced and the risks considered during development. By following this methodology, the design and implementation of the game can be clearly understood and reproduced.
 
 \section{System Architecture}
 The \textit{PiTris} game operates using a main while-loop that runs after a short initialization process. The behavior of the system is controlled by a global state, which determines what the game should do at any given moment. There are three main states:
@@ -235,7 +279,7 @@ The global state also stores the current score of the game. In \texttt{wait\_to\
 The game loop runs only in the \texttt{playing} state. Several functions are executed in each loop cycle:
 
 \subsection{Game State}
-The \textit{game state} stores information about the current block, wait interval, and the pile. The pile is represented as an 8$\times$8 array of 0s and 1s.  
+The \textit{game state} stores information about the current block, wait interval, and the pile. The pile is represented as an 8$\times$8 array of 0s and 1s.
 
 \subsection{Loop Functions}
 \begin{itemize}
@@ -264,38 +308,6 @@ The \texttt{frame} variable is used to control animations and increases by one i
     \item \textbf{Hardware and OS:} Raspberry Pi with Raspberry Pi OS (64-bit)
     \item \textbf{Development Environment:} SSH connection to the Raspberry Pi for coding and testing
 \end{itemize}
-
-\section{Challenges and Risks}
-Some challenges encountered during development include:
-
-\begin{itemize}
-    \item Limited resolution of the 8$\times$8 LED display
-    \item Transforming accelerometer readings into meaningful game input
-    \item Accelerometer calibration issues
-    \item Possible hardware malfunctions
-    \item Integration challenges between initialization, control logic, and game logic
-    \item Time constraints for testing on actual hardware
-\end{itemize}
-
-\chapter{Ethical considerations}
-Although \textit{PiTris} is primarily a technical and recreational project, it is important to consider the ethical implications of its design and use. Even small educational games can raise questions about accessibility, fairness, environmental impact, intellectual property, and user health. Addressing these issues ensures that the project is responsible, inclusive, and sustainable. The following points explain the main ethical considerations relevant to \textit{PiTris} and how they can be addressed.
-
-\section{Accessibility and Inclusion}
-The game requires players to tilt the Raspberry Pi, which excludes people with limited mobility or motor impairments. To address this, future versions could include alternative input methods, such as buttons or voice commands, making the game accessible to more users \cite{Seale2014}. Ensuring accessibility is important because everyone should have the opportunity to participate in learning and recreational activities. Testing the game with different users can help identify accessibility issues and improve the design.
-
-\section{Equity in Learning and Participation}
-The project uses specialized hardware, such as the Raspberry Pi and the Sense HAT, which may not be available to everyone due to cost. This creates equity concerns, especially in educational settings. To address this, a software-only version of the game could allow users without the hardware to participate, promoting fair access \cite{Binns2018}. Providing clear instructions and free resources online can also help bridge the gap for students or hobbyists who cannot afford the devices.
-
-\section{Environmental Issues}
-Using physical devices has an environmental impact. Frequent replacements can create electronic waste. To reduce this, devices should be handled carefully, reused when possible, and disposed of responsibly. Additionally, planning the project to use minimal hardware and sharing components among multiple users can further reduce waste. Encouraging awareness about sustainability is also part of responsible project design.
-
-\section{Copyright and Intellectual Property}
-Tetris is a copyrighted and trademarked game. Using original graphics, sounds, or branding without permission would be unethical. This project avoids directly copying copyrighted material and uses only original or educational content, respecting creators’ rights. Future releases should continue to create unique visual and audio elements. Teaching users about intellectual property can also promote ethical behavior in software development.
-
-\section{Screen Time and Health}
-Even with the small 8×8 LED grid, long play sessions could cause eye strain, fatigue, or discomfort. Games that encourage repeated attempts for higher scores can also be addictive. To address this, users should be encouraged to take regular breaks, and future versions could include reminders to limit extended play \cite{Ferguson2017}. Monitoring playtime and providing tips for safe usage can help reduce negative health effects. Encouraging balance between gaming and other activities also promotes well-being.
-
-\chapter{Implementation}
 
 
 \chapter{Contributions}

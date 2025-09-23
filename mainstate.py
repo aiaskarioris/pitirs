@@ -75,6 +75,10 @@ class MainState():
 		# Check if the pile has any full lines and drop remaining lines; score may be updated
 		self.game.check_pile()
 
+		# Render current state
+			# Draw block
+			# Draw the pile
+
 		# `check_pile` may generate a game-over; Check if this is the case
 		if self.game_over == True:
 			self.state = MainState.game_over
@@ -82,7 +86,15 @@ class MainState():
 		return
 
 	def game_over_loop(self):
+		# Create a buffer and store the score as text into it ((8xlen_of_score) x 8)
 
+		# In a 8x8 array, copy a part of the buffer above depending on `self.frame` (= offset)
+		d = []
+		for i in range(0, 64):
+			d.append(0)
+
+		# Display the 8x8 array
+		self.renderer.set_pixels(d)
 		return
 
 	def exception_loop(self):
