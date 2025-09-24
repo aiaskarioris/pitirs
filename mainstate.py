@@ -83,6 +83,7 @@ class MainState():
 		# Render current state
 		self.draw_block()
 		self.draw_pile()
+	
 
 		# `check_pile` may generate a game-over; Check if this is the case
 		if self.game.gameOver == True:
@@ -92,6 +93,15 @@ class MainState():
 
 	def game_over_loop(self):
 		# TODO
+		# Create a buffer and store the score as text into it ((8xlen_of_score) x 8)
+
+		# In a 8x8 array, copy a part of the buffer above depending on `self.frame` (= offset)
+		d = []
+		for i in range(0, 64):
+			d.append(0)
+
+		# Display the 8x8 array
+		self.renderer.set_pixels(d)
 		return
 
 	def exception_loop(self):
