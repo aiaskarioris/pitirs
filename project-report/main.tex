@@ -231,7 +231,7 @@ The game logic side is more layered and complex compared to the control logic. G
 
 
 \section{Challenges and Risks}
-Some challenges encountered during development include:
+Some challenges encountered during development include the following.
 
 \begin{itemize}
     \item Limited resolution of the 8$\times$8 LED display
@@ -250,16 +250,16 @@ Although \textit{PiTris} is primarily a technical and recreational project, it i
 The game requires players to tilt the Raspberry Pi, which excludes people with limited mobility or motor impairments. To address this, future versions could include alternative input methods, such as buttons or voice commands, making the game accessible to more users \cite{Seale2014}. Ensuring accessibility is important because everyone should have the opportunity to participate in learning and recreational activities. Testing the game with different users can help identify accessibility issues and improve the design.
 
 \section{Equity in Learning and Participation}
-The project uses specialized hardware, such as the Raspberry Pi and the Sense HAT, which may not be available to everyone due to cost. This creates equity concerns, especially in educational settings. To address this, a software-only version of the game could allow users without the hardware to participate, promoting fair access \cite{Binns2018}. Providing clear instructions and free resources online can also help bridge the gap for students or hobbyists who cannot afford the devices.
+The project uses specialized hardware, such as the Raspberry Pi and the Sense HAT, which may not be available to everyone due to cost. This creates equity concerns, especially in educational settings. To address this, a software-only version of the game could allow users without hardware to participate, promoting fair access \cite{Binns2018}. Providing clear instructions and free resources online can also help bridge the gap for students or hobbyists who cannot afford the devices.
 
 \section{Environmental Issues}
-Using physical devices has an environmental impact. Frequent replacements can create electronic waste. To reduce this, devices should be handled carefully, reused when possible, and disposed of responsibly. Additionally, planning the project to use minimal hardware and sharing components among multiple users can further reduce waste. Encouraging awareness about sustainability is also part of responsible project design.
+Using physical devices has an environmental impact. Frequent replacements can create electronic waste. To reduce this, devices should be handled carefully, reused when possible, and responsibly disposed of. In addition, planning the project to use minimal hardware and sharing components among multiple users can further reduce waste. Encouraging awareness about sustainability is also part of responsible project design.
 
 \section{Copyright and Intellectual Property}
 Tetris is a copyrighted and trademarked game. Using original graphics, sounds, or branding without permission would be unethical. This project avoids directly copying copyrighted material and uses only original or educational content, respecting creators’ rights. Future releases should continue to create unique visual and audio elements. Teaching users about intellectual property can also promote ethical behavior in software development.
 
 \section{Screen Time and Health}
-Even with the small 8×8 LED grid, long play sessions could cause eye strain, fatigue, or discomfort. Games that encourage repeated attempts for higher scores can also be addictive. To address this, users should be encouraged to take regular breaks, and future versions could include reminders to limit extended play \cite{Ferguson2017}. Monitoring playtime and providing tips for safe usage can help reduce negative health effects. Encouraging balance between gaming and other activities also promotes well-being.
+Even with the small 8×8 LED grid, long play sessions could cause eye strain, fatigue, or discomfort. Games that encourage repeated attempts to achieve higher scores can also be addictive. To address this, users should be encouraged to take regular breaks, and future versions could include reminders to limit extended play \cite{Ferguson2017}. Monitoring playtime and providing tips for safe usage can help reduce negative health effects. The encouragement of a balance between gaming and other activities also promotes well-being.
 
 \chapter{Implementation}
 This chapter describes the system architecture, game logic, graphics handling, and development tools used in the project. It also highlights the challenges faced and the risks considered during development. By following this methodology, the design and implementation of the game can be clearly understood and reproduced.
@@ -311,24 +311,29 @@ The \texttt{frame} variable is used to control animations and increases by one i
 
 
 \chapter{Contributions}
-So far, the project has progressed through close collaboration among all team members. While specific roles were assigned, most tasks were carried out together, with everyone contributing ideas, supporting development, and participating in testing and planning. The following sections outline the contributions of each member up to this point.
+So far, the project has progressed through close collaboration among all team members. The following sections outline the contributions of each member up to this point.
 \section{Sotirios Aias Karioris}
-As team lead, Aias coordinated meetings, monitored deadlines, and supported technical tasks such as boot configuration and architecture design with Julios. He also worked with Biruk and Arnab on parts of the report. In addition, he provided the initial structure and skeleton of the program, giving the team a clear vision of how the game should be built.
+As team leader, Aias coordinated meetings, tracked deadlines, and supported boot configuration and architecture design with Julios. He worked with Biruk and Arnab on the report and also provided the initial program structure, giving the team a clear direction to build the game.
 
 \section{Julios Fotiou}
-Julios has led the development side, working closely with Aias on the technical setup. He built the accelerometer prototype that maps tilts to block movements on the LED grid, an important step for the group. The prototype was developed with input and feedback from the whole team and now serves as a foundation for further game development.
+Julios led the development, working with Aias on the setup. He built the accelerometer prototype that maps tilts to block movements on the LED grid, a key step shaped by team input, and now the base for further development.
 
 \section{Arnab Kumar Ghosh}
-Arnab has helped keep track of the team’s progress, documenting design decisions and testing outcomes. He also collaborated with Biruk and Aias on sections of the project report, contributing to writing, reviewing, and maintaining consistency. His efforts have helped the group stay aligned and organized.
+Arnab tracked the team’s progress and documented design decisions and test results. He also worked with Biruk and Aias on the report, helping with writing, reviewing, and keeping it consistent, which kept the team aligned and organized. 
 
 
 \section{Biruk Aklilu}
-Biruk contributed to the overall project by helping plan and organize tasks, taking part in team discussions, and giving ideas on development. He worked with Arnab and Aias on drafting and structuring the report, particularly the introduction and purpose sections, making sure the documentation was clear and easy to follow. He also contributed ideas on how the project could be presented.
+Biruk helped plan and organize tasks, contributed ideas in discussions, and supported development. He worked with Arnab and Aias on drafting and structuring the report, especially the introduction and purpose sections, ensuring the documentation was clear and well organized.
 
- \vspace{3ex}The team divided roles to work efficiently and make the best use of each member’s strengths. In this project, all members actively participated in every stage of the project, sharing ideas, reviewing each other’s work, and supporting one another to ensure the project progressed smoothly. This collaborative approach allowed the team to learn from each other and contribute effectively to all aspects of the project.
+ \vspace{3ex}Although we assigned roles, everyone stayed involved throughout, offering feedback, helping each other, and ensuring steady progress across all parts of the project. 
 
 
 \chapter{Conclusions}
+This project presented the design and development of PiTris, a simplified Tetris game implemented on the Raspberry Pi with the Sense HAT. The prototype successfully linked accelerometer-based tilt input with block movement on the 8×8 LED matrix, demonstrating the feasibility of motion-controlled gameplay. Key challenges included sensor calibration, limited display resolution, and real-time input handling.
+
+The work provided valuable hands-on experience in programming, hardware-software integration, and problem solving, while also addressing ethical aspects such as accessibility, equity, sustainability, and user health. These considerations emphasized the broader social impact of even small-scale technical projects.
+
+Future improvements could involve refining controls, expanding the logic of the game, and improving accessibility and visual features. In general, the project combined technical achievement with critical reflection, highlighting how compact hardware projects can deliver both educational and creative value.
 
 
 \bibliographystyle{plainnat}
