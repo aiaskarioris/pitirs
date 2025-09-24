@@ -15,6 +15,14 @@ class CLIRenderer:
 	def __init__(self):
 		return
 
+    # for game_over_loop
+	def show_message(self, text):
+		print("[CLI]", text)
+
+    # for game_over_loop
+	def clear(self):
+		print("[CLI] clear")
+
 	def set_pixels(self, p):
 		# Clear screen
 		os.system("clear")
@@ -83,7 +91,7 @@ class MainState():
 		# Render current state
 		self.draw_block()
 		self.draw_pile()
-	
+
 
 		# `check_pile` may generate a game-over; Check if this is the case
 		if self.game.gameOver == True:
@@ -92,17 +100,11 @@ class MainState():
 		return
 
 	def game_over_loop(self):
-		# TODO
-		# Create a buffer and store the score as text into it ((8xlen_of_score) x 8)
-
-		# In a 8x8 array, copy a part of the buffer above depending on `self.frame` (= offset)
-		d = []
-		for i in range(0, 64):
-			d.append(0)
-
-		# Display the 8x8 array
-		self.renderer.set_pixels(d)
-		return
+	    try:
+	        while self.state == MainStateEnum.game_over:
+			    self.renderer.show_message("GAME OVER")
+	    except KeyboardInterrupt:
+	        self.renderer.clear()
 
 	def exception_loop(self):
 		# TODO
