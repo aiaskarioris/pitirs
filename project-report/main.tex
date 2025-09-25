@@ -262,56 +262,22 @@ Tetris is a copyrighted and trademarked game. Using original graphics, sounds, o
 Even with the small 8×8 LED grid, long play sessions could cause eye strain, fatigue, or discomfort. Games that encourage repeated attempts to achieve higher scores can also be addictive. To address this, users should be encouraged to take regular breaks, and future versions could include reminders to limit extended play \cite{Ferguson2017}. Monitoring playtime and providing tips for safe usage can help reduce negative health effects. The encouragement of a balance between gaming and other activities also promotes well-being.
 
 \chapter{Implementation}
-This chapter describes the system architecture, game logic, graphics handling, and development tools used in the project. It also highlights the challenges faced and the risks considered during development. By following this methodology, the design and implementation of the game can be clearly understood and reproduced.
+This chapter describes the program architecture and details about the source code.
 
-\section{System Architecture}
-The \textit{PiTris} game operates using a main while-loop that runs after a short initialization process. The behavior of the system is controlled by a global state, which determines what the game should do at any given moment. There are three main states:
+\section{Program Architecture}
+The core functionality of the game is achieved by utilizing a finite state machine, where different functions are executed depending on the current state of the program. To achieve real-time functionality, the program executes the functions corresponding to each state inside a while-loop, with a small millisecond delay between each iteration. This delay controls the frame rate of the game. The program will execute a number of rendering functions and an input poll function regardless of the state it is in. These functions however will differ depending on the state.
 
-\begin{itemize}
-    \item \textbf{wait\_to\_start:} The game is idle, waiting for user interaction. Once the player interacts, the game starts.
-    \item \textbf{playing:} A game is in progress. This state ends when the player loses.
-    \item \textbf{game\_over:} Entered after the player loses. The final score is displayed, then the game returns to \texttt{wait\_to\_start}.
-\end{itemize}
+\section{The State Machine}
+Three states have been defined in the program: the \textit{wait for play} or simply \texttt{wait} state, the \texttt{playing} state and the \texttt{game over} state. After initialization the game enters the \texttt{wait} state where it will idle until user input is detected, thus starting a new game. A new game starts by entering the \texttt{playing} state, which is also the most complex one. During this state the program periodically polls the accelerometer to infer what the user's action is and updates its internal state accordingly. The sub-state encoding the current state of the game is called the \texttt{game state} and is used only during the \texttt{playing} and \texttt{game over} states. The game state encodes the type and position of every falling block, the state of the pile and the score. Once the player loses the game the \texttt{game over} state is entered. In this state the score accumulated previously is shown on the LED grid for a few seconds. Afterwards the game state is cleared and the \texttt{wait} state is entered once more, thus restarting the cycle.
 
-The global state also stores the current score of the game. In \texttt{wait\_to\_start}, the score is set to 0. During \texttt{playing}, the score increases as the player progresses.
+\section{Accelerometer Input}
+The Sense HAT’s orientation sensors are used to control the movement of the blocks. Doing so the tilt of the device is detected, with tilting left or right moving the block horizontally and tilting forward or backward rotating it. Thresholds are applied so that small movements are ignored and only clear tilts result in actions.
 
-\section{Game Loop and Logic}
-The game loop runs only in the \texttt{playing} state. Several functions are executed in each loop cycle:
-
-\subsection{Game State}
-The \textit{game state} stores information about the current block, wait interval, and the pile. The pile is represented as an 8$\times$8 array of 0s and 1s.
-
-\subsection{Loop Functions}
-\begin{itemize}
-    \item \textbf{generate\_block():} Generates a new random block at a random location. This occurs when the previous block is cleared.
-    \item \textbf{poll\_input():} Reads the accelerometer input and updates the current falling block accordingly.
-    \item \textbf{drop\_block():} Moves the current block down by one unit. This function also handles merging the block with the pile and may clear the block if it has landed.
-    \item \textbf{check\_pile():} Checks the pile for completed lines and removes them, updating the score.
-    \item \textbf{wait():} Introduces a short delay to allow the player to process events. The delay decreases slightly as the score increases, making the game harder.
-\end{itemize}
-
-\section{Graphics Engine}
-The system uses the Sense HAT’s 8$\times$8 LED grid to display game elements. Different draw functions are executed depending on the global state:
-
-\begin{itemize}
-    \item \textbf{wait\_to\_start:} Shows a simple animation while idle.
-    \item \textbf{playing:} Split into \texttt{draw\_block()} and \texttt{draw\_pile()}. \texttt{draw\_block()} displays the current block with color. \texttt{draw\_pile()} shows the accumulated blocks in the pile.
-    \item \textbf{game\_over:} Displays the player’s score, scrolling across the screen.
-\end{itemize}
-
-The \texttt{frame} variable is used to control animations and increases by one in each main loop iteration.
-
-\section{Tools and Development Environment}
-\begin{itemize}
-    \item \textbf{Programming Language:} Python
-    \item \textbf{Libraries and APIs:} Sense HAT API
-    \item \textbf{Hardware and OS:} Raspberry Pi with Raspberry Pi OS (64-bit)
-    \item \textbf{Development Environment:} SSH connection to the Raspberry Pi for coding and testing
-\end{itemize}
 
 
 \chapter{Contributions}
 So far, the project has progressed through close collaboration among all team members. The following sections outline the contributions of each member up to this point.
+
 \section{Sotirios Aias Karioris}
 As team leader, Aias coordinated meetings, tracked deadlines, and supported boot configuration and architecture design with Julios. He worked with Biruk and Arnab on the report and also provided the initial program structure, giving the team a clear direction to build the game.
 
