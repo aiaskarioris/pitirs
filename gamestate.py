@@ -55,7 +55,7 @@ class BlockObj:
 		self.y = 0
 
 		# Set color
-		self.color = BlockObj.palette[t]
+		self.palette = BlockObj.blockPalette[t]
 
 
 	def rotate_right(self):
@@ -98,6 +98,7 @@ class GameState():
 			self.pileObj.append(0)
 
 	def generate_block(self):
+		print("Generating block")
 		self.blockObj = BlockObj()
 
 	def drop_block(self):
