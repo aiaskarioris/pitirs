@@ -11,7 +11,8 @@ class BlockObj:
 	#	Block
 
 	# Chance of each block appearing; Should sum to 1.0
-	blockChances = [0.35, 0.35, .10, .10, .10]
+	blockChances = [0.35,		0.35,			.10,		.10,			.10]
+	blockPalette = [[255,64,0],	[127,127,0],	[64,255,0],	[0,127,127],	[127, 20, 127]]
 
 	# Returns the maximum dimensions of a block
 	def get_block_dims():
@@ -49,8 +50,12 @@ class BlockObj:
 			case 4: # Block
 				self.d = [1,1,1,1]
 
+		# Set position
 		self.x = pos
 		self.y = 0
+
+		# Set color
+		self.palette = BlockObj.blockPalette[t]
 
 
 	def rotate_right(self):
@@ -93,6 +98,7 @@ class GameState():
 			self.pileObj.append(0)
 
 	def generate_block(self):
+		print("Generating block")
 		self.blockObj = BlockObj()
 
 	def drop_block(self):
