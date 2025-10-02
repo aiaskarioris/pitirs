@@ -54,13 +54,15 @@ class MainState():
 		self.renderer = SenseHat()
 		self.state = MainStateEnum.wait_to_start
 		self.frame = 0
-		self.refresh_time_ms = 50
+		self.refresh_time_ms = 600
 		self.game = None
 		self.pixels = []
 
 	# Main loop
 	def run(self):
 		while(True):
+			self.renderer.set_rotation(270)
+			print("Starting frame.")
 			if self.state == MainStateEnum.wait_to_start:
 				self.wait_to_start_loop()
 
@@ -73,8 +75,8 @@ class MainState():
 			elif self.state == MainStateEnum.exception:
 				self.exception_loop()
 
-		self.frame += 1
-		time.sleep(self.refresh_time_ms / 1000)
+			self.frame += 1
+			time.sleep(self.refresh_time_ms / 1000)
 
 	### State Functions ###########################################################################
 
@@ -98,17 +100,21 @@ class MainState():
 			self.game.generate_block()
 		# Check input and apply effect to block
 
+		# Render current state; Create the 8x8 grid first and pass it to `.set_pixels` once
+		self.clear_screen()
+		self.draw_block()
+		self.draw_pile()
+		self.renderer.set_pixels(self.pixels)
+
+		# If the top line has something on it it's game over
+		self.game.check_overflow()
+
 		# Allow block to drop by 1 pixel; The block may enter the pile in this function (thus clearing it)
 		self.game.drop_block()
 
 		# Check if the pile has any full lines and drop remaining lines; score may be updated
 		self.game.check_pile()
 
-		# Render current state; Create the 8x8 grid first and pass it to `.set_pixels` once
-		self.clear_screen()
-		self.draw_block()
-		self.draw_pile()
-		self.renderer.set_pixels(self.pixels)
 
 		# `check_pile` may generate a game-over; Check if this is the case
 		if self.game.gameOver == True:
@@ -120,8 +126,11 @@ class MainState():
 		try:
 			while self.state == MainStateEnum.game_over:
 				self.renderer.show_message("GAME OVER")
+				self.renderer.show_message("Score: " + str(self.game.score))
 		except KeyboardInterrupt:
 			self.renderer.clear()
+			self.state = MainStateEnum.wait_to_start
+			return
 
 	def exception_loop(self):
 		# TODO
@@ -138,6 +147,8 @@ class MainState():
 		# Get a reference
 		p = self.pixels
 		block = self.game.blockObj
+		if block is None:
+			return
 
 		# Draw the block in columns
 		idx = block.x + block.y * 8
