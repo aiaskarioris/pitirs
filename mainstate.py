@@ -98,7 +98,22 @@ class MainState():
 		# Generate a random block if we don't have one (just started playing or prev. one was piled)
 		if self.game.blockObj == None:
 			self.game.generate_block()
+
+
 		# Check input and apply effect to block
+		sense = SenseHat()
+		raw = sense.get_compass_raw()
+		y, z = raw['y'], raw['z']
+
+		if y > -3:
+		    self.game.blockObj.move(-1)
+		elif y < -10:
+		    self.game.blockObj.move(1)
+		elif z > 1:
+		    self.game.blockObj.rotate_left()
+		elif z < -5:
+		    self.game.blockObj.rotate_right()
+
 
 		# Render current state; Create the 8x8 grid first and pass it to `.set_pixels` once
 		self.clear_screen()
@@ -125,8 +140,8 @@ class MainState():
 	def game_over_loop(self):
 		try:
 			while self.state == MainStateEnum.game_over:
-				self.renderer.show_message("GAME OVER")
-				self.renderer.show_message("Score: " + str(self.game.score))
+				self.renderer.show_message("GAME OVER", text_colour = [255, 0, 0])
+				self.renderer.show_message("Score: " + str(self.game.score), text_colour = [255, 0, 0])
 		except KeyboardInterrupt:
 			self.renderer.clear()
 			self.state = MainStateEnum.wait_to_start
