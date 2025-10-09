@@ -183,7 +183,7 @@ class GameState():
 			# If the line is full, clear it and shift all other lines down
 			if is_full:
 				print("\tLine" + str(line) + " is full!")
-				score = (score*2) + 10
+				score = (score*5) + 10
 				# Move all lines above the full one down once
 				for mv_line in range(line-1, -1, -1):
 					print("\tmoving line " + str(mv_line))

@@ -54,7 +54,7 @@ class MainState():
 		self.renderer = SenseHat()
 		self.state = MainStateEnum.wait_to_start
 		self.frame = 0
-		self.refresh_time_ms = 600
+		self.refresh_time_ms = 300
 		self.game = None
 		self.pixels = []
 
@@ -71,6 +71,8 @@ class MainState():
 
 			elif self.state == MainStateEnum.game_over:
 				self.game_over_loop()
+				if self.frame > 2:
+					self.state = MainStateEnum.wait_to_start
 
 			elif self.state == MainStateEnum.exception:
 				self.exception_loop()
@@ -109,10 +111,18 @@ class MainState():
 		    self.game.blockObj.move(-1)
 		elif y < -10:
 		    self.game.blockObj.move(1)
-		elif z > 1:
+		# We can allow both a movement and a rotation in the same frame
+		if z > 2:
 		    self.game.blockObj.rotate_left()
 		elif z < -5:
 		    self.game.blockObj.rotate_right()
+
+		# If the top line has something on it it's game over
+		self.game.check_overflow()
+
+		# Allow block to drop by 1 pixel; The block may enter the pile in this function (thus clearing it)
+		if self.frame % 2 == 0:
+			self.game.drop_block()
 
 
 		# Render current state; Create the 8x8 grid first and pass it to `.set_pixels` once
@@ -121,34 +131,40 @@ class MainState():
 		self.draw_pile()
 		self.renderer.set_pixels(self.pixels)
 
-		# If the top line has something on it it's game over
-		self.game.check_overflow()
-
-		# Allow block to drop by 1 pixel; The block may enter the pile in this function (thus clearing it)
-		self.game.drop_block()
-
 		# Check if the pile has any full lines and drop remaining lines; score may be updated
 		self.game.check_pile()
 
-
 		# `check_pile` may generate a game-over; Check if this is the case
 		if self.game.gameOver == True:
+			self.frame = 0
 			self.state = MainStateEnum.game_over
+
+		# Update frame rate
+		if self.game.score > 70:
+			self.refresh_time_ms = min(100 - 5* (self.game.score - 60) / 10, 40)
+		if self.game.score > 50:
+			self.refresh_time_ms = 100
+		elif self.game.score > 30:
+			self.refresh_time_ms = 200
 
 		return
 
 	def game_over_loop(self):
-		try:
-			while self.state == MainStateEnum.game_over:
-				self.renderer.show_message("GAME OVER", text_colour = [255, 0, 0])
-				self.renderer.show_message("Score: " + str(self.game.score), text_colour = [255, 0, 0])
-		except KeyboardInterrupt:
-			self.renderer.clear()
-			self.state = MainStateEnum.wait_to_start
-			return
+		# try:
+		# 	while self.state == MainStateEnum.game_over:
+		# 		self.renderer.show_message("GAME OVER", text_colour = [255, 0, 0])
+		# 		self.renderer.show_message("Score: " + str(self.game.score), text_colour = [255, 0, 0])
+		# except KeyboardInterrupt:
+		# 	self.renderer.clear()
+		# 	self.state = MainStateEnum.wait_to_start
+		# 	return
+		self.renderer.show_message("GAME OVER", text_colour = [255, 0, 0])
+		self.renderer.show_message("Score: " + str(self.game.score), text_colour = [255, 0, 0])
+		self.frame = self.frame + 1
+		print(str(self.frame))
+		return
 
 	def exception_loop(self):
-		# TODO
 		return
 
 	### Drawing Functions #########################################################################
