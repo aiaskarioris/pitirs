@@ -109,7 +109,7 @@ This report is structured as follows.
 \chapter{Background}
 \label{cha:background}
 
-  The Raspberry Pi has become a popular platform for developing interactive and educational games due to its low cost, accessibility, and support for multiple programming environments. Previous studies have demonstrated its effectiveness in teaching computing concepts and enabling motion-based game prototypes, although challenges such as limited processing power, low-resolution displays, and delayed sensor input have been documented \cite{Kolling2016}. Research also shows that small-scale Raspberry Pi gaming systems can promote learning engagement, but their hardware constraints often require design trade-offs in responsiveness and graphics quality (Walsh & Buckley, 2017).
+The Raspberry Pi has become a popular platform for developing interactive and educational games due to its low cost, accessibility, and support for multiple programming environments. Previous studies have demonstrated its effectiveness in teaching computing concepts and enabling motion-based game prototypes, although challenges such as limited processing power, low-resolution displays, and delayed sensor input have been documented \cite{Kolling2016}. Research also shows that small-scale Raspberry Pi gaming systems can promote learning engagement, but their hardware constraints often require design trade-offs in responsiveness and graphics quality (Walsh \& Buckley, 2017).
 
 To expand its capabilities, accessories such as the Sense HAT provide additional components, including an 8×8 LED matrix, gyroscope, and accelerometer, which allow for sensor-based interaction. Prior work involving tilt- or motion-controlled games using the Sense HAT has highlighted both its potential for interactive applications and its limitations in terms of display size and sensor precision \cite{Saha2016}. These findings suggest that compact hardware can support engaging gameplay experiences, provided that input handling and visual representation are carefully managed.
 
@@ -148,17 +148,26 @@ Three states have been defined in the program:
  Afterwards the game state is cleared and the \texttt{wait} state is entered once more, thus restarting the cycle.
 
 \section{Accelerometer Input and Control Logic}
-The Sense HAT's accelerometer is calibrated at the start of the game to establish a baseline flat position. During gameplay, live sensor readings are compared against this baseline to detect device tilt. Tilt thresholds were experimentally determined to ensure accurate movement detection. The mapping of tilts to actions is as follows:
+The game uses the Sense HAT's accelerometer and joystick to provide an interactive and motion-based control system.
+The accelerometer detects the orientation of the device, allowing the player to move or rotate the game block by tilting the device.
+Also, the joystick is used to start, recalibrate and restart the game.
 
+When the game begins or when the joystick's center button is pressed, the current accelerometer readings are stored as a baseline, representing the flat/natural position of the device.
+During gameplay, the program continuously compares the live accelerometer readings to this baseline to determine the direction of tilt.
+
+To ensure accurate and stable control, thresholds are applied so that small movements are ignored. 
+Only when the detected tilt exceeds a defined threshold is an action triggered. 
+Additionally, a stabilizing method is used to stop the game from switching directions too quickly.
+Once a tilt is detected, it does not immediatly return to center when the device moves slightly back, but waits until tilt is clearly released.
+\newline
+\newline
+The mapping of tilts to actions is as follows:
 \begin{itemize}
     \item \textbf{Tilt Left:} Move block left
     \item \textbf{Tilt Right:} Move block right
     \item \textbf{Tilt Forward (Up):} Rotate block left
     \item \textbf{Tilt Backward (Down):} Rotate block right
-    \item \textbf{Joystick:} Start, recalibrate, and restart the game after it finishes
 \end{itemize}
-
- the joystick is used to start, recalibrate, and restart the game, providing extra control and flexibility to the player. Small, unintentional movements are ignored due to the defined thresholds, ensuring that only clear tilts trigger actions.
 
 \chapter{Results and Discussion}
 
