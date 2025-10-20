@@ -101,10 +101,11 @@ This report is structured as follows.
 \begin{itemize}
     \item \textbf{Chapter 2} reviews background material and related projects using the Raspberry Pi and Sense HAT.
     \item \textbf{Chapter 3} explains the methods used for development, testing, and prototype design.
-    \item \textbf{Chapter 4} discusses ethical considerations, including accessibility, equity, and responsible use of hardware.
-    \item \textbf{Chapter 5} presents the implementation so far, focusing on the accelerometer prototype and integration challenges.
-    \item \textbf{Chapter 6} details the contributions of each member of the group.
-    \item \textbf{Chapter 7} concludes with reflections on progress and describes future steps to complete the project.
+    \item \textbf{Chapter 4} presents the implementation so far, focusing on the accelerometer prototype and integration challenges.
+    \item \textbf{Chapter 5} discusses the technical, organizational, and developmental challenges encountered during the project and explains how they were addressed to ensure successful implementation
+    \item \textbf{Chapter 6} discusses ethical considerations,
+    \item \textbf{Chapter 7} details the contributions of each member of the group.
+    \item \textbf{Chapter 8} concludes with reflections on progress and describes future steps to complete the project.
 \end{itemize}
 \chapter{Background}
 \label{cha:background}
@@ -194,13 +195,12 @@ Other challenges included managing data overloading, handling API limits for ext
 Although \textit{PiTris} is primarily a technical and recreational project, considering the ethical implications of its design and use is important. Even small educational games can raise questions about accessibility, fairness, environmental impact, intellectual property, and user health. Addressing these issues ensures the project is responsible, inclusive, and sustainable.
 
 \section{Algorithm Design and Ethical Lens}
-The algorithm for \textit{PiTris} was implemented to prioritize real-time responsiveness, simplicity, and educational value. Decisions such as using accelerometer input for tilt control were made to enhance user engagement while demonstrating programming and hardware integration concepts. From a utilitarian perspective, the design aims to maximize benefits for the largest number of users by promoting learning, accessibility, and enjoyment.
+The algorithm for \textit{PiTris} was designed with responsiveness, simplicity, and educational value in mind. Accelerometer-based tilt control was chosen to increase interactivity and highlight the integration between hardware and software. From a utilitarian perspective, the project aims to benefit a broad range of learners by making the game engaging and informative. However, we recognize that accessibility can be improved further, and alternative input methods may be necessary in future iterations
 
 \section{Accessibility and Inclusion}
 The tilt-based control excludes users with limited mobility. Future versions could include alternative inputs, such as buttons or voice commands, to broaden accessibility \cite{Seale2014}. Testing with diverse users can help identify barriers and improve inclusivity.
 
-\section{Equity in Learning and Participation}
-Specialized hardware like the Raspberry Pi and Sense HAT may not be universally available. A software-only version or open-access resources could allow users without hardware to participate, promoting fairness and equal learning opportunities \cite{warschauer2004technology}.
+
 
 \section{Environmental Responsibility}
 Using physical devices generates electronic waste if not managed properly. Careful handling, reusing components, and responsible disposal can minimize environmental impact. Sharing hardware among multiple users and reducing the number of required devices further supports sustainability.
@@ -208,28 +208,28 @@ Using physical devices generates electronic waste if not managed properly. Caref
 \section{Copyright and Intellectual Property}
 Tetris is a copyrighted and trademarked game. This project avoids copying proprietary graphics, sounds, or branding, using only original or educational content. Respecting intellectual property ensures ethical use and sets a positive example for software development practices.
 
-\section{User Health and Screen Time}
-Even with the small 8$\times$8 LED display, extended play may cause fatigue or eye strain. Users should be encouraged to take regular breaks, and future versions could include reminders to limit playtime \cite{king2013videogame}. Promoting balanced usage supports overall well-being and responsible gaming habits.
 
 
 
 \chapter{Contributions}
-So far, the project has progressed through close collaboration among all team members. The following sections outline the contributions of each member up to this point.
+
+The project was completed through close collaboration among all team members. The following sections describe the individual contributions made during the development process.
 
 \section{Sotirios Aias Karioris}
-As team leader, Aias coordinated meetings, tracked deadlines, and supported boot configuration and architecture design with Julios. He worked with Biruk and Arnab on the report and also provided the initial program structure, giving the team a clear direction to build the game.
+As team leader, Aias coordinated meetings, monitored deadlines, and worked with Julios on boot configuration and system architecture. He collaborated with Biruk and Arnab on the report and provided the initial program structure, which gave the team a clear foundation for the game.
 
 \section{Julios Fotiou}
-Julios led the development, working with Aias on the setup. He built the accelerometer prototype that maps tilts to block movements on the LED grid, a key step shaped by team input, and now the base for further development.
+Julios led the development and worked with Aias during the initial setup. He created the accelerometer prototype that mapped tilt input to block movement on the LED grid. This prototype became the basis for the game's control system and guided later implementation.
 
 \section{Arnab Kumar Ghosh}
-Arnab tracked the team’s progress and documented design decisions and test results. He also worked with Biruk and Aias on the report, helping with writing, reviewing, and keeping it consistent, which kept the team aligned and organized. 
-
+Arnab monitored the team’s progress and documented design choices and test outcomes. He worked with Biruk and Aias on writing and reviewing the report, helping ensure consistency and clarity in the documentation.
 
 \section{Biruk Aklilu}
-Biruk helped plan and organize tasks, contributed ideas in discussions, and supported development. He worked with Arnab and Aias on drafting and structuring the report, especially the introduction and purpose sections, ensuring the documentation was clear and well organized.
+Biruk helped organize tasks, contributed ideas during discussions, and supported the development process. He worked with Arnab and Aias on structuring and drafting the report, particularly the introduction and purpose sections, ensuring clarity and coherence.
 
- \vspace{3ex}Although we assigned roles, everyone stayed involved throughout, offering feedback, helping each other, and ensuring steady progress across all parts of the project. 
+\vspace{3ex}
+Although roles were assigned, all members remained involved across different areas. Teamwork, feedback, and mutual support were consistent throughout the project, contributing to its successful completion.
+
 
 \chapter{Conclusion}
 
@@ -237,7 +237,7 @@ This project presented the design and development of \textit{PiTris}, a simplifi
 
 We encountered challenges such as sensor calibration, limited display resolution, and ensuring real-time responsiveness. These were addressed by establishing a baseline flat position and allowing joystick-triggered recalibration, optimizing the drawing order of blocks and the pile for better visual clarity, and synchronizing game logic with sensor polling. The result was smooth and predictable gameplay, validating our design choices.
 
-Beyond the technical achievements, the project offered valuable hands-on experience in programming, hardware-software integration, and problem-solving. We also considered ethical aspects, including accessibility, equity, sustainability, and user health, emphasizing the broader impact of even small-scale technical projects.
+Beyond the technical achievements, the project offered valuable hands-on experience in programming, hardware-software integration, and problem-solving. We also considered ethical aspects, including accessibility, copyright, and intellectual property, and environmental responsibility emphasizing the broader impact of even small-scale technical projects.
 
 Future improvements could focus on refining tilt sensitivity, expanding game logic, improving visual clarity, and exploring alternative input methods to make the game more accessible. Overall, \textit{PiTris} demonstrates how compact hardware projects can combine technical skill, creativity, and educational value, providing both an engaging interactive experience and a practical learning opportunity.
 
