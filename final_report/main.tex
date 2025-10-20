@@ -1,0 +1,257 @@
+
+
+\documentclass[12pt]{report}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+ % Name of your university/college
+ \textsc{\LARGE UPPSALA UNIVERSITY}\\[1.5cm]% Include a department/university logo
+\includegraphics[scale=.1]{Uppsala_University_seal_svg.png}\\[1cm]
+ 
+
+
+{ \huge Group Project Report}\\[0.5cm]
+\huge Group 17\\[1cm]% Title of your document
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+%%\emph{}\\
+\emph{Authors:}\\
+Arnab   \textsc{Kumar} \textsc{Ghosh}\\ 
+Biruk \textsc{aklilu}\\ 
+Julios   \textsc{Fotiou}\\
+Sotirios \textsc Aias \textsc Karioris  \\% Your name
+\end{flushleft}
+
+\end{minipage}\\[2cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+
+\section*{Abstract}
+This report presents \textit{PiTris}, a simplified Tetris game developed on the Raspberry Pi with the sense HAT. The game uses the accelerometer for tilt-based controls and displays blocks on the 8 x 8 LED matrix. The final implementation confirmed that motion control is workable and responsive, but also highlighted challenges with calibration and limited display resolution. Through development and testing, we gained practical experience with integrating hardware with game logic and identified areas where visual clarity and input sensitivity could be improved. The project demonstrates the feasibility of interactive gameplay on compact hardware while revealing useful technical insights.
+
+
+\vspace{1cm}
+\tableofcontents   
+\newpage 
+
+\chapter{Introduction}
+
+The project \textit{PiTris} is our attempt to recreate the classic Tetris game on the Raspberry Pi. Motion-based interaction has become increasingly common  in gaming and embedded systems because it creates an intuitive and engaging user experience . The sense 8 x 8 LED matrix of HAT provides visual output showing the blocks as they fall from the top of the screen,the sense HAT is frequently used in educational and experimental projects  due to its compact design and integrated sensors, making it suitable for simple hardware-based games\cite{raspberrypi2023} . The players aim to align the blocks to form complete rows, which then disappear as in the original game.  
+
+This project is interesting because it combines software development with hardware interaction. We work on game logic, timing, and scoring while also interpreting sensor data, handling calibration, and managing the limited resolution of the LED display. In its final state, the project includes a fully functioning game with motion controls, refined through development and testing to ensure responsiveness and playability.
+
+
+\section{Purpose and Goals}
+\label{sec:thesis-outline}
+The main purpose of this project is to gain practical experience in designing and building an interactive system that connects hardware with software. We aim to create a game that is fun and engaging while learning the challenges of working with real hardware. This project also helps us understand how users interact with devices and how input affects game performance. In addition, it gives us experience in planning, testing, and improving a system from concept to working prototype. 
+
+Our specific goals include the following.
+
+\begin{itemize}
+\item Develop a version of Tetris that works on the Sense HAT’s LED display, keeping in mind its small size and unique visual limits.
+\item Learn how to read accelerometer data and turn them into smooth and reliable player controls.
+\item Understand the challenges of hardware, including calibration, responsiveness, and software integration.
+\item Consider the wider aspects of the project, such as making it accessible to many users, promoting inclusivity, and thinking about ethical and environmental impacts.
+\item Explore ways to improve the user experience by testing different control schemes and game speeds.
+\item Document the development process thoroughly to help others learn from our approach and solutions.
+\end{itemize}
+
+
+\section{Project Outline}
+
+\label{sec:thesis-outline}
+
+This report is structured as follows.
+
+\begin{itemize}
+    \item \textbf{Chapter 2} reviews background material and related projects using the Raspberry Pi and Sense HAT.
+    \item \textbf{Chapter 3} explains the methods used for development, testing, and prototype design.
+    \item \textbf{Chapter 4} discusses ethical considerations, including accessibility, equity, and responsible use of hardware.
+    \item \textbf{Chapter 5} presents the implementation so far, focusing on the accelerometer prototype and integration challenges.
+    \item \textbf{Chapter 6} details the contributions of each member of the group.
+    \item \textbf{Chapter 7} concludes with reflections on progress and describes future steps to complete the project.
+\end{itemize}
+\chapter{Background}
+\label{cha:background}
+
+  The Raspberry Pi has become a popular platform for developing interactive and educational games due to its low cost, accessibility, and support for multiple programming environments. Previous studies have demonstrated its effectiveness in teaching computing concepts and enabling motion-based game prototypes, although challenges such as limited processing power, low-resolution displays, and delayed sensor input have been documented \cite{Kolling2016}. Research also shows that small-scale Raspberry Pi gaming systems can promote learning engagement, but their hardware constraints often require design trade-offs in responsiveness and graphics quality (Walsh & Buckley, 2017).
+
+To expand its capabilities, accessories such as the Sense HAT provide additional components, including an 8×8 LED matrix, gyroscope, and accelerometer, which allow for sensor-based interaction. Prior work involving tilt- or motion-controlled games using the Sense HAT has highlighted both its potential for interactive applications and its limitations in terms of display size and sensor precision \cite{Saha2016}. These findings suggest that compact hardware can support engaging gameplay experiences, provided that input handling and visual representation are carefully managed.
+
+Building on these earlier efforts, the PiTris project implements a Tetris-style game that relies on tilt-based input using the Sense HAT. The game explores hardware–software integration, real-time sensor monitoring, and the constraints of minimal display output, while addressing technical challenges noted in previous research.
+
+
+
+\chapter{Methodology}
+Before explaining the details of \textit{PiTris}, it is important to understand how the project builds on the concepts discussed in the background. The tools, programs and programming language used in the project are listed in this chapter. Additionally, the way the source code constituting the program is described, thus showcasing how the general problem can be broken down into manageable tasks suitable for a team. Finally, the challenges anticipated before development as well as the actual problems that were faced during development are listed and discussed.
+
+\section{Programming Language and Tools Used}
+The source code for \textit{PiTris} is exclusively written in Python, a language known for its flexibility and ease of use for rapid application development. For the utilization of the peripherals found in Sense HAT the appropriate API has been employed. Version control is provided by \textit{git} while for the software's distribution and synchronization between the members \textit{GitHub} has been chosen.
+
+\section{Division of Workload}
+Even though the target goal of this project is relatively straightforward, the work itself resembles typical game development since the game at hand can be essentially split logically into two parts: the \textit{game logic} and the \textit{control logic}. The \textit{game logic} is the field of the source code that implements the actual game, such as its rules and its graphics. The \textit{control logic} in this case revolves around the use of the input sensors of the hardware for their implementation into the final game. These two facets of the program can be independently developed and then integrated later on.
+
+The game logic side is more layered and complex compared to the control logic. Game logic encapsulates the software routines responsible for drawing to the LED grid, the control of the logical state the program is in at any given moment, and the processing of user input for the generation of actions within the game. Splitting all of these parts of the game logic into smaller parts, it is possible for different members to work simultaneously.
+
+
+
+\chapter{Implementation}
+This chapter describes the program architecture and details about the source code.
+
+\section{Program Architecture}
+PiTris is built around a finite state machine, where each state executes its own set of functions to manage game flow. The game loop runs continuously with a small millisecond delay to maintain smooth, real-time updates. In each iteration, the program handles rendering and input polling, with the specific functions depending on the current state.
+
+\section{The State Machine}
+Three states have been defined in the program: 
+\begin{itemize}
+    \item \textbf{Wait for Play State:} After initialization, the game enters the \texttt{wait} state, where it idles until user input is detected, starting a new game.
+    
+    \item \textbf{Playing State:} This is the main gameplay state and the most complex one. During this state, the program periodically polls the accelerometer to detect player actions and updates the internal \texttt{game state} accordingly. The \texttt{game state} encodes the type and position of every falling block, the state of the pile, and the current score.
+    
+    \item \textbf{Game Over State:} When the player loses, the game enters the \texttt{game over} state. The accumulated score is displayed on the LED grid for a few seconds. 
+\end{itemize}
+ Afterwards the game state is cleared and the \texttt{wait} state is entered once more, thus restarting the cycle.
+
+\section{Accelerometer Input and Control Logic}
+The Sense HAT's accelerometer is calibrated at the start of the game to establish a baseline flat position. During gameplay, live sensor readings are compared against this baseline to detect device tilt. Tilt thresholds were experimentally determined to ensure accurate movement detection. The mapping of tilts to actions is as follows:
+
+\begin{itemize}
+    \item \textbf{Tilt Left:} Move block left
+    \item \textbf{Tilt Right:} Move block right
+    \item \textbf{Tilt Forward (Up):} Rotate block left
+    \item \textbf{Tilt Backward (Down):} Rotate block right
+    \item \textbf{Joystick:} Start, recalibrate, and restart the game after it finishes
+\end{itemize}
+
+ the joystick is used to start, recalibrate, and restart the game, providing extra control and flexibility to the player. Small, unintentional movements are ignored due to the defined thresholds, ensuring that only clear tilts trigger actions.
+
+\chapter{Results and Discussion}
+
+\section{Discussion}
+
+During the development of the Tetris game, the team encountered several technical and organizational challenges that influenced implementation and required careful management.
+
+\subsection{Technical Challenges}
+
+The game initially faced issues with tilt responsiveness due to laggy accelerometer input. This was improved by doubling the sensor polling rate and reducing the block falling speed, allowing smoother control. Additionally, the incorrect use of the magnetometer instead of the accelerometer was corrected during testing.  
+
+Other technical challenges included transforming sensor readings into meaningful game input, calibrating the accelerometer, integrating control logic with game logic, and dealing with hardware limitations such as the low-resolution 8$\times$8 LED display. Possible hardware malfunctions and time constraints for testing on the Sense HAT were also addressed.
+
+\subsection{Group Challenges}
+
+Coordinating tasks among multiple team members required dividing the workload into sub-teams based on skills and experience. Sharing the Sense HAT hardware posed logistical challenges, which were managed by implementing a schedule for effective usage.
+
+\subsection{Additional Challenges and Risks}
+
+Other challenges included managing data overloading, handling API limits for external services, and avoiding UI clutter due to multiple widgets. These risks were considered and mitigated throughout development to ensure smooth gameplay and reliable performance.
+
+\chapter{Ethical Considerations}
+
+Although \textit{PiTris} is primarily a technical and recreational project, considering the ethical implications of its design and use is important. Even small educational games can raise questions about accessibility, fairness, environmental impact, intellectual property, and user health. Addressing these issues ensures the project is responsible, inclusive, and sustainable.
+
+\section{Algorithm Design and Ethical Lens}
+The algorithm for \textit{PiTris} was implemented to prioritize real-time responsiveness, simplicity, and educational value. Decisions such as using accelerometer input for tilt control were made to enhance user engagement while demonstrating programming and hardware integration concepts. From a utilitarian perspective, the design aims to maximize benefits for the largest number of users by promoting learning, accessibility, and enjoyment.
+
+\section{Accessibility and Inclusion}
+The tilt-based control excludes users with limited mobility. Future versions could include alternative inputs, such as buttons or voice commands, to broaden accessibility \cite{Seale2014}. Testing with diverse users can help identify barriers and improve inclusivity.
+
+\section{Equity in Learning and Participation}
+Specialized hardware like the Raspberry Pi and Sense HAT may not be universally available. A software-only version or open-access resources could allow users without hardware to participate, promoting fairness and equal learning opportunities \cite{warschauer2004technology}.
+
+\section{Environmental Responsibility}
+Using physical devices generates electronic waste if not managed properly. Careful handling, reusing components, and responsible disposal can minimize environmental impact. Sharing hardware among multiple users and reducing the number of required devices further supports sustainability.
+
+\section{Copyright and Intellectual Property}
+Tetris is a copyrighted and trademarked game. This project avoids copying proprietary graphics, sounds, or branding, using only original or educational content. Respecting intellectual property ensures ethical use and sets a positive example for software development practices.
+
+\section{User Health and Screen Time}
+Even with the small 8$\times$8 LED display, extended play may cause fatigue or eye strain. Users should be encouraged to take regular breaks, and future versions could include reminders to limit playtime \cite{king2013videogame}. Promoting balanced usage supports overall well-being and responsible gaming habits.
+
+
+
+\chapter{Contributions}
+So far, the project has progressed through close collaboration among all team members. The following sections outline the contributions of each member up to this point.
+
+\section{Sotirios Aias Karioris}
+As team leader, Aias coordinated meetings, tracked deadlines, and supported boot configuration and architecture design with Julios. He worked with Biruk and Arnab on the report and also provided the initial program structure, giving the team a clear direction to build the game.
+
+\section{Julios Fotiou}
+Julios led the development, working with Aias on the setup. He built the accelerometer prototype that maps tilts to block movements on the LED grid, a key step shaped by team input, and now the base for further development.
+
+\section{Arnab Kumar Ghosh}
+Arnab tracked the team’s progress and documented design decisions and test results. He also worked with Biruk and Aias on the report, helping with writing, reviewing, and keeping it consistent, which kept the team aligned and organized. 
+
+
+\section{Biruk Aklilu}
+Biruk helped plan and organize tasks, contributed ideas in discussions, and supported development. He worked with Arnab and Aias on drafting and structuring the report, especially the introduction and purpose sections, ensuring the documentation was clear and well organized.
+
+ \vspace{3ex}Although we assigned roles, everyone stayed involved throughout, offering feedback, helping each other, and ensuring steady progress across all parts of the project. 
+
+\chapter{Conclusion}
+
+This project presented the design and development of \textit{PiTris}, a simplified Tetris game implemented on the Raspberry Pi with the Sense HAT. The finished prototype successfully linked accelerometer-based tilt input to block movement on the 8×8 LED matrix. By calibrating the accelerometer at the start, defining tilt thresholds through experimentation, and adjusting the sensor polling rate and block falling speed, we achieved accurate and responsive controls. Testing showed that each block could perform up to 14 moves or rotations with minimal input lag, confirming the effectiveness of the control scheme.
+
+We encountered challenges such as sensor calibration, limited display resolution, and ensuring real-time responsiveness. These were addressed by establishing a baseline flat position and allowing joystick-triggered recalibration, optimizing the drawing order of blocks and the pile for better visual clarity, and synchronizing game logic with sensor polling. The result was smooth and predictable gameplay, validating our design choices.
+
+Beyond the technical achievements, the project offered valuable hands-on experience in programming, hardware-software integration, and problem-solving. We also considered ethical aspects, including accessibility, equity, sustainability, and user health, emphasizing the broader impact of even small-scale technical projects.
+
+Future improvements could focus on refining tilt sensitivity, expanding game logic, improving visual clarity, and exploring alternative input methods to make the game more accessible. Overall, \textit{PiTris} demonstrates how compact hardware projects can combine technical skill, creativity, and educational value, providing both an engaging interactive experience and a practical learning opportunity.
+
+
+
+
+
+
+\bibliographystyle{ieeetr}
+\bibliography{main}
+
+\end{document}\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Uppsala_University_seal_svg.png}
+    \caption{Enter Caption}
+    \label{fig:placeholder}
+ \end{figure}
+
+
+\end{document}
+
+%%% Local Variables: ***
+%%% mode: latex ***
+%%% TeX-master: "main.tex"  ***
+%%% ispell-local-dictionary: "british"  ***
+%%% End: ***
